@@ -89,10 +89,9 @@ describe("books", () => {
 
   describe("/books?query", () => {
     test("get books by title & author", () => {
-      const query = "?title=sherlock&author=arthur";
-      //or can add .query()
       return request(app)
-        .get(`${route()}${query}`)
+        .get(route())
+        .query({ title: "sherlock", author: "arthur" })
         .expect(200)
         .expect("Content-Type", /json/)
         .expect([
@@ -102,13 +101,20 @@ describe("books", () => {
             author: "Arthur",
             price: 20,
             quantity: 80
+          },
+          {
+            id: "4",
+            title: "Sherlock Holmes",
+            author: "Conan",
+            price: 20,
+            quantity: 80
           }
         ]);
     });
     test("get books by title", () => {
-      const query = "?title=sherlock";
       return request(app)
-        .get(`${route()}${query}`)
+        .get(route())
+        .query({ title: "sherlock" })
         .expect(200)
         .expect("Content-Type", /json/)
         .expect([
@@ -129,9 +135,9 @@ describe("books", () => {
         ]);
     });
     test("get books by author", () => {
-      const query = "?author=conan";
       return request(app)
-        .get(`${route()}${query}`)
+        .get(route())
+        .query({ author: "conan" })
         .expect(200)
         .expect("Content-Type", /json/)
         .expect([

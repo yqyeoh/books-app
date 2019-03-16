@@ -42,12 +42,13 @@ function verifyToken(req, res, next) {
 protectedRouter.use(verifyToken);
 
 router.route("/").get((req, res) => {
-  let filteredBooks = books;
   const keys = Object.keys(req.query);
-  // filteredBooks = books.filter(book => book[key]);
-  for (const key in req.query) {
-    filteredBooks = filteredBooks.filter(book =>
-      book[key].toLowerCase().includes(req.query[key].toLowerCase())
+  let filteredBooks = books;
+  if (keys.length > 0) {
+    filteredBooks = books.filter(book =>
+      keys.some(key =>
+        book[key].toLowerCase().includes(req.query[key].toLowerCase())
+      )
     );
   }
   res.json(filteredBooks);
